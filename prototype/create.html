@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建图片 - AI画廊</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://tdesign.gtimg.com/icon/0.1.1/fonts/index.css">
+</head>
+<body class="bg-gray-50">
+    <!-- 顶部安全区域 -->
+    <div class="h-10 bg-gray-50"></div>
+
+    <div class="p-4">
+        <!-- 顶部导航 -->
+        <div class="flex items-center justify-between relative mb-6">
+            <a href="home.html" class="text-gray-600 z-10">
+                <i class="t-icon t-icon-arrow-left text-2xl"></i>
+            </a>
+            <h1 class="text-lg font-semibold absolute left-1/2 -translate-x-1/2">创建图片</h1>
+            <!-- 添加一个空的div来平衡布局 -->
+            <div class="w-8"></div>
+        </div>
+
+        <!-- 提示词输入区 -->
+        <div class="mb-6">
+            <textarea
+                class="w-full h-32 p-3 border border-gray-200 rounded-lg resize-none focus:outline-none focus:border-blue-500"
+                placeholder="试试描述：主角 + 在哪里 + 做什么 + 像什么风格？&#10;例如：一只可爱的柴犬在樱花树下打盹，动漫风格"
+            ></textarea>
+        </div>
+
+        <!-- 常用词按钮 -->
+        <div class="flex flex-wrap gap-2 mb-6">
+            <button class="px-3 py-1 bg-gray-100 text-sm rounded-full hover:bg-gray-200">写实</button>
+            <button class="px-3 py-1 bg-gray-100 text-sm rounded-full hover:bg-gray-200">动漫</button>
+            <button class="px-3 py-1 bg-gray-100 text-sm rounded-full hover:bg-gray-200">电影感</button>
+            <button class="px-3 py-1 bg-gray-100 text-sm rounded-full hover:bg-gray-200">梦幻</button>
+            <button class="px-3 py-1 bg-gray-100 text-sm rounded-full hover:bg-gray-200">赛博朋克</button>
+            <button class="px-3 py-1 bg-gray-100 text-sm rounded-full hover:bg-gray-200">水彩画</button>
+        </div>
+
+        <!-- 不想要的元素输入区 -->
+        <div class="mb-6">
+            <input
+                type="text"
+                class="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
+                placeholder="输入不想要的元素（可选），例如：不要文字、不要模糊"
+            >
+        </div>
+
+        <!-- 生成按钮 -->
+        <a href="result.html" class="block">
+            <button class="w-full py-3 bg-blue-500 text-white rounded-lg">
+                生成图片
+            </button>
+        </a>
+    </div>
+</body>
+</html> 

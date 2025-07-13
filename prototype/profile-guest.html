@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的 - AI画廊</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://tdesign.gtimg.com/icon/0.1.1/fonts/index.css">
+</head>
+<body class="bg-gray-50">
+    <!-- 顶部安全区域 -->
+    <div class="h-10 bg-gray-50"></div>
+    
+    <!-- 主内容区 -->
+    <div class="pb-16">
+        <!-- 顶部标题 -->
+        <div class="py-4 px-4 bg-white border-b border-gray-200">
+            <h1 class="text-lg font-semibold text-center">我的</h1>
+        </div>
+
+        <!-- 未登录状态 -->
+        <div class="p-8 flex flex-col items-center justify-center min-h-[60vh]">
+            <div class="w-24 h-24 bg-gray-200 rounded-full mb-4 flex items-center justify-center">
+                <i class="t-icon t-icon-user text-4xl text-gray-400"></i>
+            </div>
+            <p class="text-gray-500 mb-8">登录后查看您的个人画廊</p>
+            <a href="profile.html" class="w-full max-w-xs">
+                <button class="w-full px-8 py-3 bg-green-500 text-white rounded-full flex items-center justify-center">
+                    <i class="t-icon t-icon-logo-wechat mr-2"></i>
+                    微信一键登录
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+        <div class="flex justify-around py-2">
+            <a href="home.html" class="flex flex-col items-center text-gray-400">
+                <i class="t-icon t-icon-home text-2xl"></i>
+                <span class="text-xs">首页</span>
+            </a>
+            <a href="profile-guest.html" class="flex flex-col items-center text-blue-500">
+                <i class="t-icon t-icon-user text-2xl"></i>
+                <span class="text-xs">我的</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html> 
