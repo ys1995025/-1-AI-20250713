@@ -1,0 +1,45 @@
+<view class="create-container">
+  <!-- 提示词输入区 -->
+  <view class="input-section">
+    <textarea 
+      class="prompt-input" 
+      placeholder="试试描述：主角 + 在哪里 + 做什么 + 像什么风格？&#10;例如：一只可爱的柴犬在樱花树下打盹，动漫风格" 
+      bindinput="onPromptInput"
+      value="{{prompt}}"
+      maxlength="500"
+      auto-height
+    ></textarea>
+    <view class="char-count" wx:if="{{prompt}}">{{prompt.length}}/500</view>
+  </view>
+
+  <!-- 常用词按钮 -->
+  <view class="style-tags">
+    <view 
+      wx:for="{{styleTags}}" 
+      wx:key="index" 
+      class="style-tag" 
+      bindtap="addStyleTag" 
+      data-tag="{{item}}"
+    >{{item}}</view>
+  </view>
+
+  <!-- 不想要的元素输入区 -->
+  <view class="input-section">
+    <input 
+      class="negative-input" 
+      placeholder="输入不想要的元素（可选），例如：不要文字、不要模糊" 
+      bindinput="onNegativePromptInput"
+      value="{{negativePrompt}}"
+    />
+  </view>
+
+  <!-- 生成按钮 -->
+  <button 
+    class="generate-btn {{isGenerating ? 'generating' : ''}}" 
+    bindtap="generateImage" 
+    disabled="{{!prompt || isGenerating}}"
+  >
+    <view class="loading-icon" wx:if="{{isGenerating}}"></view>
+    <text>{{isGenerating ? '生成中...' : '生成图片'}}</text>
+  </button>
+</view> 

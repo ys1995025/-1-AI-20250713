@@ -1,0 +1,47 @@
+<view class="result-container">
+  <!-- 提示词展示 -->
+  <view class="prompt-display">
+    <view class="prompt-label">使用的提示词</view>
+    <view class="prompt-content">{{prompt}}</view>
+    <view class="negative-prompt" wx:if="{{negativePrompt}}">
+      <text class="negative-label">排除元素：</text>
+      <text>{{negativePrompt}}</text>
+    </view>
+  </view>
+
+  <!-- 生成的图片 -->
+  <view class="image-container">
+    <!-- 加载状态 -->
+    <view class="loading-overlay" wx:if="{{isLoading}}">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">正在生成您的作品...</text>
+    </view>
+    
+    <!-- 生成结果 -->
+    <image 
+      class="result-image" 
+      src="{{imageUrl}}" 
+      mode="aspectFit" 
+      bindtap="previewImage"
+      wx:if="{{!isLoading}}"
+    ></image>
+  </view>
+
+  <!-- 重新生成按钮 -->
+  <button class="regenerate-btn" bindtap="regenerateImage" wx:if="{{!isLoading}}">
+    <view class="btn-icon refresh-icon"></view>
+    <text>重新生成</text>
+  </button>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="save-btn" bindtap="saveToAlbum">
+      <view class="btn-icon save-icon"></view>
+      <text>保存到相册</text>
+    </button>
+    <button class="share-btn" bindtap="publishArtwork">
+      <view class="btn-icon share-icon"></view>
+      <text>发布作品</text>
+    </button>
+  </view>
+</view> 

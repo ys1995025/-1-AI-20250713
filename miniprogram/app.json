@@ -1,13 +1,34 @@
 {
   "pages": [
+    "pages/home/home",
+    "pages/profile/profile",
+    "pages/create/create",
+    "pages/result/result",
     "pages/index/index",
     "pages/logs/logs"
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "Weixin",
+    "navigationBarTitleText": "AI画廊",
     "navigationBarBackgroundColor": "#ffffff"
   },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#0052d9",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
   "componentFramework": "glass-easel",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "usingComponents": {}
 }

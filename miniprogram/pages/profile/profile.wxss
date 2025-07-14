@@ -1,0 +1,176 @@
+/* 未登录状态 */
+.guest-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  min-height: 60vh;
+}
+
+.avatar-placeholder {
+  width: 96px;
+  height: 96px;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.avatar-icon {
+  width: 48px;
+  height: 48px;
+  background-color: #d0d0d0;
+  border-radius: 50%;
+  position: relative;
+}
+
+.avatar-icon::before {
+  content: '';
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 40%;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+}
+
+.avatar-icon::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 60%;
+  background-color: #f0f0f0;
+  border-radius: 50% 50% 0 0;
+}
+
+.login-hint {
+  color: var(--text-color-light);
+  margin-bottom: 32px;
+  font-size: 14px;
+}
+
+.login-btn {
+  background-color: #07c160;
+  color: white;
+  border-radius: 999px;
+  padding: 12px 24px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  max-width: 300px;
+}
+
+.wechat-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+/* 已登录状态 */
+.user-container {
+  padding: 16px;
+  padding-bottom: 80px; /* 为底部导航栏留出空间 */
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.user-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin-right: 16px;
+}
+
+.user-detail {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.user-stats {
+  font-size: 12px;
+  color: var(--text-color-light);
+}
+
+/* 画廊部分 */
+.gallery-section {
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.artwork-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.artwork-image {
+  width: 100%;
+  height: 192px;
+  object-fit: cover;
+}
+
+.artwork-info {
+  padding: 8px;
+}
+
+.artwork-prompt {
+  font-size: 12px;
+  color: var(--text-color-light);
+}
+
+/* 空画廊 */
+.empty-gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  color: var(--text-color-light);
+  text-align: center;
+}
+
+.create-first-btn {
+  margin-top: 16px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+/* 页面容器 */
+.page-container {
+  padding-bottom: 60px; /* 为底部导航栏留出空间 */
+} 

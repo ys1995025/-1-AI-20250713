@@ -1,0 +1,28 @@
+<!-- 顶部安全区域 -->
+<view class="safe-area-top"></view>
+
+<!-- 主内容区 -->
+<view class="page-container">
+  <!-- 图片网格 -->
+  <view class="image-grid">
+    <block wx:for="{{artworks}}" wx:key="id">
+      <view class="artwork-card" bindtap="previewImage" data-url="{{item.imageUrl}}" data-prompt="{{item.prompt}}">
+        <image class="artwork-image" src="{{item.imageUrl}}" mode="aspectFill" lazy-load></image>
+        <view class="artwork-info">
+          <text class="artwork-prompt truncate">{{item.prompt}}</text>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 加载更多提示 -->
+  <view class="loading-more" wx:if="{{isLoading}}">
+    <view class="loading-spinner"></view>
+    <text>加载中...</text>
+  </view>
+
+  <!-- 创建按钮 -->
+  <view class="create-btn" bindtap="navigateToCreate">
+    <text class="create-icon">+</text>
+  </view>
+</view> 

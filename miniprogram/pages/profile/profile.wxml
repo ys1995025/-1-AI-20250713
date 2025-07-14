@@ -1,0 +1,48 @@
+<!-- 顶部安全区域 -->
+<view class="safe-area-top"></view>
+
+<!-- 主内容区 -->
+<view class="page-container">
+  <!-- 未登录状态 -->
+  <view class="guest-container" wx:if="{{!isLoggedIn}}">
+    <view class="avatar-placeholder">
+      <view class="avatar-icon"></view>
+    </view>
+    <text class="login-hint">登录后查看您的个人画廊</text>
+    <button class="login-btn" bindtap="login">
+      <image class="wechat-icon" src="/assets/icons/wechat.svg" mode="aspectFit"></image>
+      微信一键登录
+    </button>
+  </view>
+
+  <!-- 已登录状态 -->
+  <view class="user-container" wx:else>
+    <!-- 用户信息 -->
+    <view class="user-info">
+      <image class="user-avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+      <view class="user-detail">
+        <text class="user-name">{{userInfo.nickName}}</text>
+        <text class="user-stats">已创作 {{artworkCount}} 幅作品</text>
+      </view>
+    </view>
+
+    <!-- 个人画廊 -->
+    <view class="gallery-section">
+      <view class="section-title">个人画廊</view>
+      <view class="image-grid" wx:if="{{myArtworks.length > 0}}">
+        <block wx:for="{{myArtworks}}" wx:key="id">
+          <view class="artwork-card" bindtap="previewImage" data-url="{{item.imageUrl}}" data-prompt="{{item.prompt}}">
+            <image class="artwork-image" src="{{item.imageUrl}}" mode="aspectFill" lazy-load></image>
+            <view class="artwork-info">
+              <text class="artwork-prompt truncate">{{item.prompt}}</text>
+            </view>
+          </view>
+        </block>
+      </view>
+      <view class="empty-gallery" wx:else>
+        <text>您还没有创作作品</text>
+        <button class="create-first-btn" bindtap="navigateToCreate">开始创作</button>
+      </view>
+    </view>
+  </view>
+</view> 
