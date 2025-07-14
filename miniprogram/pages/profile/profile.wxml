@@ -19,9 +19,17 @@
   <view class="user-container" wx:else>
     <!-- 用户信息 -->
     <view class="user-info">
-      <image class="user-avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+      <view class="avatar-container">
+        <image class="user-avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+        <view class="edit-avatar-btn" bindtap="chooseAvatar">
+          <view class="edit-icon"></view>
+        </view>
+      </view>
       <view class="user-detail">
-        <text class="user-name">{{userInfo.nickName}}</text>
+        <view class="name-row">
+          <text class="user-name">{{userInfo.nickName}}</text>
+          <button class="edit-profile-btn" bindtap="editProfile">编辑资料</button>
+        </view>
         <text class="user-stats">已创作 {{artworkCount}} 幅作品</text>
       </view>
     </view>
@@ -43,6 +51,27 @@
         <text>您还没有创作作品</text>
         <button class="create-first-btn" bindtap="navigateToCreate">开始创作</button>
       </view>
+    </view>
+  </view>
+</view>
+
+<!-- 编辑资料弹窗 -->
+<view class="profile-modal" wx:if="{{showEditModal}}">
+  <view class="modal-mask" bindtap="closeModal"></view>
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">编辑资料</text>
+      <view class="modal-close" bindtap="closeModal">×</view>
+    </view>
+    <view class="modal-body">
+      <view class="form-item">
+        <text class="form-label">昵称</text>
+        <input class="form-input" value="{{editUserInfo.nickName}}" bindinput="onNicknameInput" placeholder="请输入昵称" />
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button class="modal-btn cancel" bindtap="closeModal">取消</button>
+      <button class="modal-btn confirm" bindtap="saveProfile">保存</button>
     </view>
   </view>
 </view> 

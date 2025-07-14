@@ -9,6 +9,12 @@ cloud.init({
 const db = cloud.database()
 const userCollection = db.collection('users')
 
+// 确保URL使用HTTPS协议
+function ensureHttps(url) {
+  if (!url) return url;
+  return url.replace(/^http:\/\//i, 'https://');
+}
+
 // 云函数入口函数
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
@@ -30,6 +36,12 @@ exports.main = async (event, context) => {
       _openid: openid
     }).get()
     
+    // 处理用户信息，确保avatarUrl使用HTTPS
+    const processedUserInfo = {...userInfo};
+    if (processedUserInfo.avatarUrl) {
+      processedUserInfo.avatarUrl = ensureHttps(processedUserInfo.avatarUrl);
+    }
+    
     let result
     
     if (userResult.data.length > 0) {
@@ -38,7 +50,7 @@ exports.main = async (event, context) => {
         _openid: openid
       }).update({
         data: {
-          ...userInfo,
+          ...processedUserInfo,
           updateTime: db.serverDate()
         }
       })
@@ -53,7 +65,7 @@ exports.main = async (event, context) => {
       result = await userCollection.add({
         data: {
           _openid: openid,
-          ...userInfo,
+          ...processedUserInfo,
           createTime: db.serverDate(),
           updateTime: db.serverDate()
         }

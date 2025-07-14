@@ -10,6 +10,12 @@ Page({
     page: 1,
     hasMore: true
   },
+  
+  // 确保URL使用HTTPS协议
+  ensureHttps(url: string): string {
+    if (!url) return url;
+    return url.replace(/^http:\/\//i, 'https://');
+  },
 
   onLoad() {
     this.loadArtworks();
@@ -65,6 +71,11 @@ Page({
             prompt: '水彩画风格的春天樱花'
           }
         ];
+        
+        // 确保所有图片链接使用HTTPS
+        mockData.forEach(artwork => {
+          artwork.imageUrl = this.ensureHttps(artwork.imageUrl);
+        });
 
         const hasMore = this.data.page < 5; // 模拟只有5页数据
         
@@ -88,9 +99,12 @@ Page({
 
   previewImage(e: WechatMiniprogram.TouchEvent) {
     const { url, prompt } = e.currentTarget.dataset;
+    // 确保预览图片使用HTTPS
+    const httpsUrl = this.ensureHttps(url);
+    
     wx.previewImage({
-      current: url,
-      urls: [url],
+      current: httpsUrl,
+      urls: [httpsUrl],
       showmenu: true
     });
   }

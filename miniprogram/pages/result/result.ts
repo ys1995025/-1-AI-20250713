@@ -6,6 +6,12 @@ Page({
     imageUrl: '',
     isLoading: true
   },
+  
+  // 确保URL使用HTTPS协议
+  ensureHttps(url: string): string {
+    if (!url) return url;
+    return url.replace(/^http:\/\//i, 'https://');
+  },
 
   onLoad(options: Record<string, string>) {
     // 从URL参数获取提示词
@@ -39,7 +45,7 @@ Page({
     setTimeout(() => {
       // 随机生成一个图片URL
       const randomSeed = Math.floor(Math.random() * 1000);
-      const imageUrl = `https://picsum.photos/800/800?random=${randomSeed}`;
+      const imageUrl = this.ensureHttps(`https://picsum.photos/800/800?random=${randomSeed}`);
       
       this.setData({
         imageUrl,
@@ -54,8 +60,11 @@ Page({
       title: '保存中...'
     });
 
+    // 确保下载URL使用HTTPS
+    const downloadUrl = this.ensureHttps(this.data.imageUrl);
+
     wx.downloadFile({
-      url: this.data.imageUrl,
+      url: downloadUrl,
       success: (res) => {
         if (res.statusCode === 200) {
           wx.saveImageToPhotosAlbum({
@@ -121,9 +130,12 @@ Page({
 
   // 预览图片
   previewImage() {
+    // 确保预览图片使用HTTPS
+    const httpsUrl = this.ensureHttps(this.data.imageUrl);
+    
     wx.previewImage({
-      urls: [this.data.imageUrl],
-      current: this.data.imageUrl
+      urls: [httpsUrl],
+      current: httpsUrl
     });
   }
 }); 
