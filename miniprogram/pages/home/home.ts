@@ -1,14 +1,23 @@
 // pages/home/home.ts
+import { getPublicArtworks } from '../../utils/artworkService';
+
+interface ArtworkItem {
+  _id: string;
+  imageUrl: string;
+  prompt: string;
+  userName: string;
+  userAvatar: string;
+  createTime: Date;
+}
+
 Page({
   data: {
-    artworks: [] as Array<{
-      id: string;
-      imageUrl: string;
-      prompt: string;
-    }>,
+    artworks: [] as ArtworkItem[],
     isLoading: false,
     page: 1,
-    hasMore: true
+    hasMore: true,
+    isEmpty: false,
+    isFirstLoad: true  // 标记是否是首次加载
   },
   
   // 确保URL使用HTTPS协议
@@ -18,18 +27,40 @@ Page({
   },
 
   onLoad() {
+    // 页面首次加载时获取数据
+    this.loadArtworks();
+  },
+
+  onShow() {
+    // 每次进入页面时刷新数据，但跳过第一次（因为onLoad已经加载过）
+    if (!this.data.isFirstLoad) {
+      console.log('首页显示，刷新数据');
+      this.refreshArtworks();
+    } else {
+      // 首次加载后标记为非首次
+      this.setData({
+        isFirstLoad: false
+      });
+    }
+  },
+
+  // 刷新作品数据
+  refreshArtworks() {
+    // 重置数据状态
+    this.setData({
+      artworks: [],
+      page: 1,
+      hasMore: true,
+      isEmpty: false
+    });
+    
+    // 重新加载数据
     this.loadArtworks();
   },
 
   onPullDownRefresh() {
-    this.setData({
-      artworks: [],
-      page: 1,
-      hasMore: true
-    });
-    this.loadArtworks().then(() => {
-      wx.stopPullDownRefresh();
-    });
+    this.refreshArtworks();
+    wx.stopPullDownRefresh();
   },
 
   onReachBottom() {
@@ -38,57 +69,70 @@ Page({
     }
   },
 
-  loadArtworks() {
+  async loadArtworks() {
     if (this.data.isLoading || !this.data.hasMore) {
       return Promise.resolve();
     }
 
     this.setData({ isLoading: true });
 
-    // 模拟API请求，实际项目中应替换为真实API调用
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        // 模拟数据
-        const mockData = [
-          {
-            id: `artwork-${this.data.page}-1`,
-            imageUrl: 'https://picsum.photos/300/400?random=' + Math.random(),
-            prompt: '一只在森林中奔跑的魔法鹿，梦幻风格'
-          },
-          {
-            id: `artwork-${this.data.page}-2`,
-            imageUrl: 'https://picsum.photos/300/400?random=' + Math.random(),
-            prompt: '星空下的古老城堡，电影感'
-          },
-          {
-            id: `artwork-${this.data.page}-3`,
-            imageUrl: 'https://picsum.photos/300/400?random=' + Math.random(),
-            prompt: '未来都市街景，赛博朋克风格'
-          },
-          {
-            id: `artwork-${this.data.page}-4`,
-            imageUrl: 'https://picsum.photos/300/400?random=' + Math.random(),
-            prompt: '水彩画风格的春天樱花'
-          }
-        ];
-        
+    try {
+      // 调用云函数获取作品列表
+      const result = await getPublicArtworks({
+        page: this.data.page
+      });
+
+      if (result.success && result.data) {
         // 确保所有图片链接使用HTTPS
-        mockData.forEach(artwork => {
-          artwork.imageUrl = this.ensureHttps(artwork.imageUrl);
+        const artworks = result.data.map((artwork: any) => {
+          if (artwork.imageUrl) {
+            artwork.imageUrl = this.ensureHttps(artwork.imageUrl);
+          }
+          if (artwork.userAvatar) {
+            artwork.userAvatar = this.ensureHttps(artwork.userAvatar);
+          }
+          return artwork;
         });
 
-        const hasMore = this.data.page < 5; // 模拟只有5页数据
+        // 判断是否为空数据
+        const isEmpty = this.data.page === 1 && artworks.length === 0;
         
         this.setData({
-          artworks: [...this.data.artworks, ...mockData],
+          artworks: [...this.data.artworks, ...artworks],
           isLoading: false,
           page: this.data.page + 1,
-          hasMore
+          hasMore: result.hasMore || false,
+          isEmpty
+        });
+      } else {
+        this.setData({ 
+          isLoading: false,
+          hasMore: false
         });
         
-        resolve();
-      }, 1000);
-    });
+        if (this.data.page === 1) {
+          this.setData({ isEmpty: true });
+        }
+        
+        wx.showToast({
+          title: result.message || '加载失败',
+          icon: 'none'
+        });
+      }
+    } catch (error) {
+      console.error('加载作品失败', error);
+      this.setData({ 
+        isLoading: false,
+        hasMore: false 
+      });
+      
+      wx.showToast({
+        title: '加载失败，请重试',
+        icon: 'none'
+      });
+    }
+
+    return Promise.resolve();
   },
 
   navigateToCreate() {

@@ -4,21 +4,37 @@
 <!-- 主内容区 -->
 <view class="page-container">
   <!-- 图片网格 -->
-  <view class="image-grid">
-    <block wx:for="{{artworks}}" wx:key="id">
+  <view class="image-grid" wx:if="{{!isEmpty}}">
+    <block wx:for="{{artworks}}" wx:key="_id">
       <view class="artwork-card" bindtap="previewImage" data-url="{{item.imageUrl}}" data-prompt="{{item.prompt}}">
         <image class="artwork-image" src="{{item.imageUrl}}" mode="aspectFill" lazy-load></image>
         <view class="artwork-info">
           <text class="artwork-prompt truncate">{{item.prompt}}</text>
+          <view class="artwork-user">
+            <image class="user-avatar" src="{{item.userAvatar || '/assets/icons/user.png'}}" mode="aspectFill"></image>
+            <text class="user-name">{{item.userName || '匿名用户'}}</text>
+          </view>
         </view>
       </view>
     </block>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{isEmpty}}">
+    <view class="empty-icon"></view>
+    <text class="empty-text">还没有作品，快来创建第一个作品吧！</text>
+    <button class="empty-button" bindtap="navigateToCreate">开始创作</button>
   </view>
 
   <!-- 加载更多提示 -->
   <view class="loading-more" wx:if="{{isLoading}}">
     <view class="loading-spinner"></view>
     <text>加载中...</text>
+  </view>
+
+  <!-- 无更多数据 -->
+  <view class="no-more" wx:if="{{!hasMore && !isLoading && !isEmpty && artworks.length > 0}}">
+    <text>— 没有更多作品了 —</text>
   </view>
 
   <!-- 创建按钮 -->

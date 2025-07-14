@@ -1,4 +1,6 @@
 // pages/profile/profile.ts
+import { getUserArtworks } from '../../utils/artworkService';
+
 Page({
   data: {
     isLoggedIn: false,
@@ -153,38 +155,39 @@ Page({
         throw new Error('无法获取用户标识');
       }
 
-      // 实际项目中，这里应该调用云函数获取用户作品
-      // 这里先使用模拟数据
-      const mockArtworks = [
-        {
-          id: 'my-artwork-1',
-          imageUrl: 'https://picsum.photos/300/400?random=' + Math.random(),
-          prompt: '我的第一幅AI画作'
-        },
-        {
-          id: 'my-artwork-2',
-          imageUrl: 'https://picsum.photos/300/400?random=' + Math.random(),
-          prompt: '星空下的城市'
-        }
-      ];
+      // 调用云函数获取用户作品
+      const result = await getUserArtworks({ page: 1 });
+
+      if (!result.success || !result.data) {
+        throw new Error(result.message || '获取作品失败');
+      }
 
       // 确保所有图片链接使用HTTPS
-      mockArtworks.forEach(artwork => {
-        artwork.imageUrl = this.ensureHttps(artwork.imageUrl);
+      const artworks = result.data.map((artwork: any) => {
+        if (artwork.imageUrl) {
+          artwork.imageUrl = this.ensureHttps(artwork.imageUrl);
+        }
+        return {
+          id: artwork._id,
+          imageUrl: artwork.imageUrl,
+          prompt: artwork.prompt,
+          negativePrompt: artwork.negativePrompt,
+          createTime: artwork.createTime
+        };
       });
 
       this.setData({
-        myArtworks: mockArtworks,
-        artworkCount: mockArtworks.length
+        myArtworks: artworks,
+        artworkCount: result.total || artworks.length
       });
 
       wx.hideLoading();
-    } catch (error) {
+    } catch (error: any) {
       console.error('加载作品失败', error);
       wx.hideLoading();
       
       wx.showToast({
-        title: '加载作品失败',
+        title: error.message || '加载作品失败',
         icon: 'none',
         duration: 2000
       });

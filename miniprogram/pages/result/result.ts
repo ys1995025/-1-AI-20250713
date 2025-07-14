@@ -1,5 +1,6 @@
 // pages/result/result.ts
 import { pollTaskResult, TaskStatus, TaskResult } from '../../utils/imageGenerationService';
+import { publishArtwork, saveArtwork } from '../../utils/artworkService';
 
 Page({
   data: {
@@ -11,7 +12,8 @@ Page({
     isLoading: true,
     error: '',        // 错误信息
     seed: 0,          // 随机种子，用于重新生成
-    isPolling: false  // 是否正在轮询
+    isPolling: false,  // 是否正在轮询
+    isPublishing: false // 是否正在发布中
   },
   
   // 确保URL使用HTTPS协议
@@ -249,7 +251,7 @@ Page({
   },
 
   // 发布作品
-  publishArtwork() {
+  async publishArtwork() {
     if (!this.data.imageUrl) {
       wx.showToast({
         title: '无图片可发布',
@@ -258,14 +260,32 @@ Page({
       return;
     }
 
+    if (this.data.isPublishing) {
+      return;
+    }
+
+    this.setData({
+      isPublishing: true
+    });
+
     wx.showLoading({
       title: '发布中...'
     });
 
-    // 目前简单实现跳转到首页
-    // 实际项目中应调用云函数保存作品数据
-    setTimeout(() => {
+    try {
+      // 调用云函数保存作品数据，使用新的saveArtwork函数
+      const result = await saveArtwork({
+        imageUrl: this.data.imageUrl,
+        prompt: this.data.prompt,
+        negativePrompt: this.data.negativePrompt,
+        actualPrompt: this.data.actualPrompt
+      });
+
       wx.hideLoading();
+      
+      if (!result.success) {
+        throw new Error(result.message || '发布失败');
+      }
       
       wx.showToast({
         title: '发布成功',
@@ -280,6 +300,17 @@ Page({
           }, 1500);
         }
       });
-    }, 1000);
+    } catch (error: any) {
+      wx.hideLoading();
+      console.error('发布作品失败', error);
+      wx.showToast({
+        title: error.message || '发布失败，请重试',
+        icon: 'none'
+      });
+    } finally {
+      this.setData({
+        isPublishing: false
+      });
+    }
   }
 }); 
