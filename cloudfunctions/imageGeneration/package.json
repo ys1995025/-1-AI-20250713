@@ -1,0 +1,15 @@
+{
+  "name": "imageGeneration",
+  "version": "1.0.0",
+  "description": "图像生成云函数，使用阿里云文生图API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3",
+    "axios": "^1.6.2"
+  }
+} 

@@ -1,6 +1,7 @@
 <view class="create-container">
   <!-- 提示词输入区 -->
   <view class="input-section">
+    <view class="section-title">描述你想要的图片</view>
     <textarea 
       class="prompt-input" 
       placeholder="试试描述：主角 + 在哪里 + 做什么 + 像什么风格？&#10;例如：一只可爱的柴犬在樱花树下打盹，动漫风格" 
@@ -25,6 +26,7 @@
 
   <!-- 不想要的元素输入区 -->
   <view class="input-section">
+    <view class="section-title">不希望出现的内容</view>
     <input 
       class="negative-input" 
       placeholder="输入不想要的元素（可选），例如：不要文字、不要模糊" 

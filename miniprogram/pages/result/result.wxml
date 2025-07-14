@@ -7,6 +7,10 @@
       <text class="negative-label">排除元素：</text>
       <text>{{negativePrompt}}</text>
     </view>
+    <view class="actual-prompt" wx:if="{{actualPrompt && actualPrompt !== prompt}}">
+      <text class="actual-label">智能优化后的提示词：</text>
+      <text>{{actualPrompt}}</text>
+    </view>
   </view>
 
   <!-- 生成的图片 -->
@@ -14,7 +18,13 @@
     <!-- 加载状态 -->
     <view class="loading-overlay" wx:if="{{isLoading}}">
       <view class="loading-spinner"></view>
-      <text class="loading-text">正在生成您的作品...</text>
+      <text class="loading-text">{{loadingText || '正在生成您的作品...'}}</text>
+    </view>
+    
+    <!-- 错误信息 -->
+    <view class="error-container" wx:if="{{error}}">
+      <view class="error-icon">!</view>
+      <text class="error-message">{{error}}</text>
     </view>
     
     <!-- 生成结果 -->
@@ -23,7 +33,7 @@
       src="{{imageUrl}}" 
       mode="aspectFit" 
       bindtap="previewImage"
-      wx:if="{{!isLoading}}"
+      wx:if="{{!isLoading && !error && imageUrl}}"
     ></image>
   </view>
 
@@ -34,14 +44,14 @@
   </button>
 
   <!-- 操作按钮 -->
-  <view class="action-buttons">
+  <view class="action-buttons" wx:if="{{!isLoading && !error && imageUrl}}">
     <button class="save-btn" bindtap="saveToAlbum">
       <view class="btn-icon save-icon"></view>
       <text>保存到相册</text>
     </button>
     <button class="share-btn" bindtap="publishArtwork">
       <view class="btn-icon share-icon"></view>
-      <text>发布作品</text>
+      <text>发布</text>
     </button>
   </view>
 </view> 
